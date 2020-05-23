@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<head>
+  <title>debugger</title>
+</head>
+
+<body>
+  <form>
+    消息：<input type="text" name="message"><br>
+    <input type="radio" name="message_type" value="private">私聊
+    <input type="radio" name="message_type" value="group">群聊<br>
+    用户：<input type="text" name="user_id"><br>
+    用户名：<input type="text" name="nickname"><br>
+    群号：<input type="text" name="group_id"><br>
+    群身份：
+    <select name="group_role">
+      <option value="0">群主</option>
+      <option value="1">管理员</option>
+      <option value="2">成员</option>
+    </select><br>
+    <input type="submit" value="发送">
+  </form>
+</body>

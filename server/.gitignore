@@ -1,0 +1,6 @@
+venv
+*.py[cdo]
+yobot_data/
+build/
+dist/
+assets/

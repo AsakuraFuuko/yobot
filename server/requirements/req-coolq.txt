@@ -1,0 +1,2 @@
+aiocqhttp
+-r ./requirements.txt

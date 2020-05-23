@@ -1,0 +1,5 @@
+peewee
+aiohttp
+APScheduler
+flask-restful
+Flask-JWT

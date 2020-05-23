@@ -1,0 +1,13 @@
+[coolq]
+access_token = 'your_token'
+
+[mirai]
+qq = 123456
+authKey = 'abcdefg'
+mirai_api_http_locate = 'localhost:8080/'
+
+[yobot]
+host = '0.0.0.0'
+port = 9222
+public_address = 'auto'
+super_admin = 654321

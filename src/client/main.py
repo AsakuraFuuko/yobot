@@ -2,6 +2,11 @@
 实例1：利用aiocqhttp作为httpapi的服务端
 """
 
+if __package__:
+    from .mirai.yobot_mirai_cp_httpapi_adapter import MiraiHttp
+else:
+    from mirai.yobot_mirai_cp_httpapi_adapter import MiraiHttp
+
 import platform
 import os
 import sys
@@ -68,15 +73,26 @@ def main():
             time.sleep(3)
             raise e from e
         token = config.get("access_token", None)
+        is_mirai = config.get("is_mirai", None)
         if token is None:
             print("警告：没有设置access_token，这会直接暴露机器人接口")
             print("详见https://yobot.win/usage/access-token/")
     else:
         token = None
+        is_mirai = False
 
-    cqbot = CQHttp(access_token=token,
-                   enable_http_post=False)
     sche = AsyncIOScheduler(timezone=pytz.timezone('Asia/Shanghai'))
+
+    if not is_mirai:
+        cqbot = CQHttp(access_token=token,
+                       enable_http_post=False)
+    else:
+        mirai_host = config.get("mirai_host")
+        mirai_port = config.get("mirai_port")
+        mirai_auth_key = config.get("mirai_auth_key")
+        mirai_qq = config.get("mirai_qq")
+        cqbot = MiraiHttp(auth_key=mirai_auth_key, host=mirai_host, port=mirai_port, qq=mirai_qq)
+
     bot = yobot.Yobot(data_path=basedir,
                       scheduler=sche,
                       quart_app=cqbot.server_app,

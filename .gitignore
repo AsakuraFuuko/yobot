@@ -8,6 +8,7 @@ src/client/*/
 !src/client/yybplugins/
 !src/client/public/
 !src/client/packedfiles/
+!src/client/mirai/
 src/client/.*
 src/client/*.json
 !src/client/default_*

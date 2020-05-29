@@ -382,6 +382,20 @@ class ClanBattle:
                 raise GroupError('今日报刀记录不为空，无法将记录添加到昨日')
             d -= 1
             t += 86400
+        if previous_day or behalfed is None:
+            if group.challenging_member_qq_id is not None:
+                if user.qqid != group.challenging_member_qq_id:
+                    nik = self._get_nickname_by_qqid(
+                        group.challenging_member_qq_id,
+                    ) or group.challenging_member_qq_id
+                    action = '正在挑战' if group.boss_lock_type == 1 else '锁定了'
+                    msg = f'申请失败，{nik}{action}boss'
+                    if group.boss_lock_type != 1:
+                        msg += '\n留言：' + group.challenging_comment
+                    raise GroupError(msg)
+            else:
+                msg = '请先申请出刀'
+                raise GroupError(msg)
         challenges = Clan_challenge.select().where(
             Clan_challenge.gid == group_id,
             Clan_challenge.qqid == qqid,
@@ -391,10 +405,10 @@ class ClanBattle:
         challenges = list(challenges)
         finished = sum(bool(c.boss_health_ramain or c.is_continue)
                        for c in challenges)
-        if finished >= 3:
-            if previous_day:
-                raise InputError('昨日上报次数已达到3次')
-            raise InputError('今日上报次数已达到3次')
+        # if finished >= 3:
+        #     if previous_day:
+        #         raise InputError('昨日上报次数已达到3次')
+        #     raise InputError('今日上报次数已达到3次')
         is_continue = (challenges
                        and challenges[-1].boss_health_ramain == 0
                        and not challenges[-1].is_continue)
@@ -1345,10 +1359,10 @@ class ClanBattle:
                 if match:
                     appli_type = 2
                     extra_msg = match.group(1)
-                if isinstance(extra_msg, str):
-                    extra_msg = extra_msg.strip()
-                    if not extra_msg:
-                        return '锁定时请留言'
+                    if isinstance(extra_msg, str):
+                        extra_msg = extra_msg.strip()
+                        if not extra_msg:
+                            return '锁定时请留言'
                 else:
                     return
             try:

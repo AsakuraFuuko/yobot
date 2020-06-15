@@ -76,7 +76,7 @@ class Login:
             if self.setting['web_mode_hint']:
                 reply += '\n\n如果无法打开，请仔细阅读教程中《链接无法打开》的说明'
         elif match_num == 3:
-            reply = f'您的临时密码是：{self._reset_pwd(ctx)}'
+            reply = f'您的临时pw是：{self._reset_pwd(ctx)}'
         else:
             assert False, f"没有实现匹配码{match_num}对应的操作"
 

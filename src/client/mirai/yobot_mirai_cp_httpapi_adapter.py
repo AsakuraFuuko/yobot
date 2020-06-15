@@ -18,7 +18,7 @@ else:
 # 如果想开发自己的机器人，建议直接使用 python-mirai 框架
 # https://github.com/NatriumLab/python-mirai
 
-def cq_message_to_mirai_message_chain(message: str, sub_type: bool) -> List:
+def cq_message_to_mirai_message_chain(message: str, sub_type: bool = "group") -> List:
     splits = re.split(r"(\[CQ:at,qq=\d+\])", message)
 
     message_chain = []

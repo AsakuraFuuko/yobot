@@ -19,8 +19,8 @@
 由于不同的服务器提供商所需的步骤不同，所以具体方法请通过搜索引擎搜索：【你的提供商+你的操作系统+如何开放端口】
 
 由于需要和yobot插件版兼容，默认路由设置为/yobot，直接访问根目录会产生405错误。
-如果您没有修改路径，请通过 http://您的公网IP:yobot运行的端口/yobot/ 进行访问。
-e.g. http://10.10.10.10:9222/yobot/
+如果您没有修改路径，请通过 `http://您的公网IP:yobot运行的端口/yobot/` 进行访问。
+e.g. `http://10.10.10.10:9222/yobot/`
 
 ::: warning
 
@@ -69,7 +69,8 @@ server {
 
   ## 输出文件直接访问（可选，性能）
   #location /yobot/output/ {
-  #  alias /home/yobot/src/client/output/;  # 你的输出文件目录，如果你修改了`public_basepath`，请同时修改这里的`location`
+  #  alias /home/yobot/src/client/yobot_data/output/;  # 你的输出文件目录，如果你修改了`public_basepath`，请同时修改这里的`location`
+  #  charset utf-8;  # 设置 HTTP 响应的字符集避免页面出现乱码
   #  expires 30d;
   #}
 

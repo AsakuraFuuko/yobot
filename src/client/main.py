@@ -27,10 +27,7 @@ do
         rm .YOBOT_RESTART
     fi
 done
-""".format(
-    './yobot' if '_MEIPASS' in dir(sys) else 'python3 main.py'
-)
-)
+""".format('./yobot' if '_MEIPASS' in dir(sys) else 'python3 main.py'))
         print('请通过"sh yobotg.sh"启动')
         sys.exit()
     if os.path.exists('.YOBOT_RESTART'):
@@ -40,7 +37,7 @@ import asyncio
 import json
 import time
 
-import pytz
+import tzlocal
 from aiocqhttp import CQHttp
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
@@ -66,7 +63,7 @@ def main():
         basedir = "./yobot_data"
     if os.path.exists(os.path.join(basedir, "yobot_config.json")):
         try:
-            with open(os.path.join(basedir, "yobot_config.json"), "r", encoding="utf-8") as f:
+            with open(os.path.join(basedir, "yobot_config.json"), "r", encoding="utf-8-sig") as f:
                 config = json.load(f)
         except json.JSONDecodeError as e:
             print('配置文件格式错误，请检查配置文件。三秒后关闭')
@@ -81,8 +78,15 @@ def main():
         token = None
         is_mirai = False
 
-    sche = AsyncIOScheduler(timezone=pytz.timezone('Asia/Shanghai'))
+    try:
+        tzlocal.get_localzone()
+    except:
+        print("无法获取系统时区，请将系统时区设置为北京/上海时区")
+        sys.exit()
 
+    cqbot = CQHttp(access_token=token,
+                   enable_http_post=False)
+    sche = AsyncIOScheduler()
     if not is_mirai:
         cqbot = CQHttp(access_token=token,
                        enable_http_post=False)

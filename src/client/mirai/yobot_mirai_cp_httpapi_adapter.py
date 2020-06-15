@@ -18,14 +18,17 @@ else:
 # 如果想开发自己的机器人，建议直接使用 python-mirai 框架
 # https://github.com/NatriumLab/python-mirai
 
-def cq_message_to_mirai_message_chain(message: str) -> List:
+def cq_message_to_mirai_message_chain(message: str, sub_type: bool) -> List:
     splits = re.split(r"(\[CQ:at,qq=\d+\])", message)
 
     message_chain = []
     for text in splits:
         match = re.match(r"\[CQ:at,qq=(\d+)\]", text)
         if match is not None and match.group(1):
-            message_chain.append({"type": "At", "target": int(match.group(1))})
+            if sub_type == "group":
+                message_chain.append({"type": "At", "target": int(match.group(1))})
+            else:
+                message_chain.append({"type": "Plain", "text": int(match.group(1))})
         else:
             message_chain.append({"type": "Plain", "text": text})
     return message_chain
@@ -40,7 +43,7 @@ class Api:
 
     async def send_msg(self, **message):
         logging.debug(message)
-        message_chain = cq_message_to_mirai_message_chain(message["message"])
+        message_chain = cq_message_to_mirai_message_chain(message["message"], message["sub_type"])
         target = message["user_id"]
         if message["message_type"] == "private":
             if message["sub_type"] == "group":

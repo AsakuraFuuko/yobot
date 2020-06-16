@@ -68,7 +68,8 @@ class GachaInfo:
         self.up_count += (1 if item.up else 0)
         if self.first_up == 0 and item.up:
             self.first_up = self.gacha_count
-        self.add_hiishi += STAR_HIISHI[item.star - 1]
+        if not new:
+            self.add_hiishi += STAR_HIISHI[item.star - 1]
 
 
 # 子奖池相关的信息
@@ -230,7 +231,7 @@ class GachaPoolsMgr:
         pool = self.get_pool_by_name(string)
         if pool is not None:
             return pool
-        try: 
+        try:
             index = int(string)
             return self.get_pool_by_index(index)
         except ValueError:
@@ -373,7 +374,7 @@ class GachaNew:
                 int(time.time())))
             self.db_conn.commit()
             db.close()
-        
+
         @app.route(
             urljoin(self.setting['public_basepath'], 'admin/gacha_new/config.html'),
                 methods=['GET'])

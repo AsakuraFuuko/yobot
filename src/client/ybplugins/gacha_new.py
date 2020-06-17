@@ -764,7 +764,7 @@ class GachaNew:
         Returns:
             str: 充值结果
         """
-        if from_qqid not in self.admin_list:
+        if from_qqid not in map(lambda x: int(x), self.admin_list):
             return f"[CQ:at,qq={from_qqid}]，您无权执行充值操作。"
         else:
             db = self.db_conn.cursor()
